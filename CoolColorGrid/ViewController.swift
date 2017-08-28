@@ -9,13 +9,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let numPerRow = 15
+    
+    var cellsDict = [String:UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let numPerRow = 15
         let width = self.view.frame.width / CGFloat(numPerRow)
-        
         for j in 0...30 {
         for i in 0...numPerRow{
             let cell = UIView()
@@ -24,10 +26,54 @@ class ViewController: UIViewController {
             cell.backgroundColor = givColor()
             cell.frame = CGRect(x: CGFloat(i) * width, y: CGFloat(j) * width, width: width, height: width)
             self.view.addSubview(cell)
+
+            let key = "\(i)|\(j)"
+            cellsDict[key] = cell
+            
         }
         }
         
+        self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(pangestur(gesture:))))
+        
     
+    }
+    var selectedCell:UIView?
+    
+    func pangestur(gesture:UIPanGestureRecognizer) {
+        let touch = gesture.location(in: self.view)
+        let width = self.view.frame.width / CGFloat(numPerRow)
+
+        let i = Int(touch.x / width)
+        let j = Int(touch.y / width)
+        let key = "\(i)|\(j)"
+        guard let cellView = cellsDict[key] else {return}
+        
+        view.bringSubview(toFront: cellView)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+            
+            cellView.layer.transform = CATransform3DMakeScale(3, 3, 3)
+        }, completion: nil)
+        
+        if selectedCell != cellView {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+                
+                self.selectedCell?.layer.transform = CATransform3DIdentity
+                
+            }, completion: nil)
+            
+        }
+        
+        selectedCell = cellView
+        
+        
+        if gesture.state == .ended {
+            UIView.animate(withDuration: 0.5, delay: 0.25, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+                
+                self.selectedCell?.layer.transform = CATransform3DIdentity
+                
+            }, completion: nil)
+        }
+        
     }
     
     func givColor() -> UIColor {
