@@ -10,16 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let numPerRow = 15
+    let numberPerRow = 10
     
     var cellsDict = [String:UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let width = self.view.frame.width / CGFloat(numPerRow)
+        let width = self.view.frame.width / CGFloat(numberPerRow)
         for j in 0...30 {
-        for i in 0...numPerRow{
+        for i in 0...numberPerRow{
             let cell = UIView()
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 0.5
@@ -39,9 +39,9 @@ class ViewController: UIViewController {
     }
     var selectedCell:UIView?
     
-    func pangestur(gesture:UIPanGestureRecognizer) {
+    @objc func pangestur(gesture:UIPanGestureRecognizer) {
         let touch = gesture.location(in: self.view)
-        let width = self.view.frame.width / CGFloat(numPerRow)
+        let width = self.view.frame.width / CGFloat(numberPerRow)
 
         let i = Int(touch.x / width)
         let j = Int(touch.y / width)
@@ -85,10 +85,5 @@ class ViewController: UIViewController {
         return UIColor(red: red, green: blue, blue: green, alpha: 1)
         
     }
-    
-
-
-
-
 }
 
