@@ -1,3 +1,3 @@
 # CoolColorGrid
 
-Cool color grid with cool animation effects.
+Super color grid with cool animation effects.
